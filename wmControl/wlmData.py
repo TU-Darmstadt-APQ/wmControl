@@ -968,7 +968,6 @@ def get_calibration_wavelength(dll: ctypes.WinDLL | ctypes.CDLL, pre_calibration
 
 
 def open_window(dll: ctypes.WinDLL | ctypes.CDLL, application_path: str | None, product_id: int, timeout: int) -> None:
-    # FIXME: Allow any file name for the GUI application. The default value is currently used (second parameter is 0).
     flags = ControlFlags(dll.ControlWLMEx(cCtrlWLMShow | cCtrlWLMWait, application_path or 0, product_id, timeout, 1))
     if ControlFlags.flServerStarted not in flags:
         raise WavemeterException(f"Error while opening the wavemeter GUI: {flags}")

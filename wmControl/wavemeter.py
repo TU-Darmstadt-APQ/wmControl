@@ -113,7 +113,7 @@ class Wavemeter:
     def product_id(self) -> int:
         return self.__product_id
 
-    def __init__(self, product_id, dll_path: str) -> None:
+    def __init__(self, product_id, application_path: str | None, dll_path: str) -> None:
         # Set attributes
         self.__product_id = product_id
         self.__logger = logging.getLogger(__name__)
@@ -121,6 +121,7 @@ class Wavemeter:
         self.__threadpool: concurrent.futures.ThreadPoolExecutor | None = None
         self.__event_queue: janus.Queue[DataPackage] | None = None
         self.__callback: ctypes.POINTER | None = None
+        self.__application_path = application_path
 
         # Load dll path
         if wlmData.dll is None:
@@ -167,7 +168,7 @@ class Wavemeter:
         except NoWavemeterAvailable:
             # There is no way to tell if the wavemeter is actually available, so we will now try to open the
             # wavemeter GUI application and try again
-            await self.open_window(self.product_id)
+            await self.open_window(self.__application_path, self.product_id)
             # The open_window function returns before the wavemeter application is able to respond, so we will wait
             # for the first event which signals that the application is ready to send and receive data
             async for event in self.read_events():
@@ -303,7 +304,7 @@ class Wavemeter:
         return await self.__wrapper(wlmData.get_calibration_wavelength, pre_calibration)
 
     @_lock_wavemeter
-    async def open_window(self, product_id: int) -> None:
+    async def open_window(self, application_path: str | None, product_id: int) -> None:
         """
         Open the GUI window required for the wavemeter DLL access. This function will wait indefinitely for the window
         to open.
@@ -314,8 +315,7 @@ class Wavemeter:
             The wavemeter product id/version/serial number.
         """
         # Set the timeout to -1 (infinity), because the timeout should be handled via asyncio
-        # FIXME: Allow a file name for the GUI application instead of the default (None).
-        await self.__wrapper(wlmData.open_window, None, product_id, -1)
+        await self.__wrapper(wlmData.open_window, application_path, product_id, -1)
 
     @_lock_wavemeter
     async def set_auto_calibration(self, enable: bool) -> None:

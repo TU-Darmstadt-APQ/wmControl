@@ -199,7 +199,18 @@ def create_client_handler(
     return client_handler
 
 
-async def monitor_wavemeter(wavemeter: Wavemeter):
+async def monitor_wavemeter(wavemeter: Wavemeter) -> None:
+    """
+    Monitors the wavemeter events and waits for a shutdown event. There are two events involved. One is the
+    WavemeterServerShutdown event, the other is the WavemeterServerInitialized event if its value is 0.
+
+    The function returns when the monitored wavemeter has shut down.
+
+    Parameters
+    ----------
+    wavemeter: Wavemeter
+        The wavemeter to be monitored
+    """
     async for event in wavemeter.read_events():
         if isinstance(event, WavemeterServerShutdown):
             break
@@ -216,6 +227,8 @@ async def create_wm_server(product_id: int, interface: str | Sequence[str] | Non
     ---------
     product_id: int
         Version of the WM. Works like a serial number just not named like it.
+    application_path: str or None
+        The Windows of the HighFinesse
     interface: str or Sequence[str] or None
         The interface to listen on. If a str is given, the server is bound to that interface. If a sequence is given,
         the server is bound to the interfaces given. If set to None, the server is bound to all available interfaces.
@@ -226,7 +239,7 @@ async def create_wm_server(product_id: int, interface: str | Sequence[str] | Non
 
     while "running the server":
         pending_tasks: set[asyncio.Task] = set()
-        async with Wavemeter(product_id, dll_path=dll_path) as wavemeter:  # Activate wavemeter.
+        async with Wavemeter(product_id, application_path=None, dll_path=dll_path) as wavemeter:  # Activate wavemeter.
             server = await asyncio.start_server(
                 client_connected_cb=create_client_handler(wavemeter), host=interface, port=port
             )
