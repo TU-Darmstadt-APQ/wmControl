@@ -2514,7 +2514,15 @@ class NoWavemeterAvailable(WavemeterException):
     pass
 
 
-class LowSignalError(WavemeterException):
+class SignalError(WavemeterException):
+    pass
+
+
+class LowSignalError(SignalError):
+    pass
+
+
+class HighSignalError(SignalError):
     pass
 
 
@@ -2525,6 +2533,7 @@ class NoValueError(WavemeterException):
 wavemeter_exceptions = {
     ErrNoValue: NoValueError,
     ErrLowSignal: LowSignalError,
+    ErrBigSignal: HighSignalError,
     ErrWlmMissing: NoWavemeterAvailable,
     ResERR_NotAvailable: ResourceNotAvailable,
 }

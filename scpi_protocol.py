@@ -9,7 +9,7 @@ from typing import Callable, Iterable
 from scpi import Cmd, Commands
 
 from wmControl.wavemeter import Wavemeter
-from wmControl.wlmConst import LowSignalError, NoValueError, WavemeterException, WavemeterType
+from wmControl.wlmConst import NoValueError, SignalError, WavemeterException, WavemeterType
 
 
 class ScpiException(Exception):
@@ -144,7 +144,7 @@ async def _query_channel(
         if isinstance(results[i], NoValueError):
             results[i] = Decimal("NaN")
             continue
-        if isinstance(results[i], LowSignalError):
+        if isinstance(results[i], SignalError):
             results[i] = Decimal("NaN")
             continue
         if isinstance(results[i], WavemeterException):
