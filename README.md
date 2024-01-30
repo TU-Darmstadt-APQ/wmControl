@@ -25,6 +25,7 @@ print("Wavelength channel 2: ", wave_2)
 ## Linux
 ```
 python3 -m venv env  # Create a virtual environment for the build tools
+source env/bin/activate
 pip install -r requirements.txt
 pre-commit install
 ```
