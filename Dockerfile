@@ -1,4 +1,4 @@
-FROM alpine:3.20.1 as builder
+FROM alpine:3.20.2 as builder
 
 ARG BUILD_CORES
 ARG GIT_REPOSITORY
@@ -30,7 +30,7 @@ RUN COLOUR='\e[1;93m' && \
   pip install -r /app/requirements.txt && \
   echo -e "${COLOUR}Done.\e[0m"
 
-FROM alpine:3.20.1
+FROM alpine:3.20.2
 LABEL maintainer="Patrick Baus <patrick.baus@physik.tu-darmstadt.de>"
 LABEL description="HighFinesse Wavemeter SCPI deamon."
 
