@@ -1,6 +1,7 @@
 """
 Contains the related class for wavemeter control.
 """
+
 from __future__ import annotations
 
 import asyncio

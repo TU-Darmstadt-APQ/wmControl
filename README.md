@@ -23,7 +23,7 @@ print("Wavelength channel 2: ", wave_2)
 
 # Installation instructions
 ## Linux
-```
+```bash
 python3 -m venv env  # Create a virtual environment for the build tools
 source env/bin/activate
 pip install -r requirements.txt
@@ -39,7 +39,7 @@ pre-commit install
 To configure the host use a *.env*-file. Within it, a wavemeter is represented by a list of the version of the wavemeter,
 the IP-address or interface of the host and a port of the host. You can also use a *.bat*-file to automate the host.
 
-An example for both is shown in the example dictionary. 
+An example for both is shown in the example dictionary.
 
 ## Versioning
 
