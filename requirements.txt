@@ -1,4 +1,4 @@
-janus~=1.0.0
+janus~=1.1.0
 pre-commit~=4.0.1
 python-decouple~=3.8
 scpi-protocol~=0.2.0
